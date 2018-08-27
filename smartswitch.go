@@ -216,19 +216,17 @@ func (c *Controller) Start() (location string, err error) {
 		listenAddr = nil
 	}
 
+	// Get advertisable address (optionally filtered by interface)
+	advAddr, err := advertiseIPAddr(c.iface)
+	if err != nil {
+		return "", err
+	}
+
 	ip := ""
 	if listenAddr != nil {
 		ip = listenAddr.String()
-	} else {
-		// Get advertisable address (optionally filtered by interface)
-		advAddr, err := advertiseIPAddr(c.iface)
-		if err != nil {
-			return "", err
-		}
-
-		if c.iface != "" {
-			ip = advAddr.String()
-		}
+	} else if c.iface != "" {
+		ip = advAddr.String()
 	}
 
 	// Create listener explicitly, so we can find the allocated port
@@ -238,7 +236,10 @@ func (c *Controller) Start() (location string, err error) {
 	}
 
 	// Get final listener address (as it may not have been requested)
-	location = fmt.Sprintf("http://%s%s%s", l.Addr().String(), c.uriPrefix, setupURI)
+	parts := strings.Split(l.Addr().String(), ":")
+	port := parts[len(parts)-1]
+
+	location = fmt.Sprintf("http://%s:%s%s%s", advAddr.String(), port, c.uriPrefix, setupURI)
 
 	go func() {
 		err := c.srv.Serve(l)

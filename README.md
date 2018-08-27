@@ -3,7 +3,7 @@ Package that provides a simple interface for any go app to emulate a Belkin Wemo
 I built this to use in my [garagedoor](https://github.com/forfuncsake/garagedoor) project, so that my Alexa devices could control my garage door over it's LAN-only API.
 
 # Usage
-Basic example of package usage can be found in the `example` application (explicitly using interface `en1` on my mac).(https://github.com/forfuncsake/smartswitch/tree/master/cmd/example).
+Basic example of package usage can be found in the `example` application.(https://github.com/forfuncsake/smartswitch/tree/master/cmd/example).
 
 # Documentation
 godoc can be found here: https://godoc.org/github.com/forfuncsake/smartswitch

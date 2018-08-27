@@ -27,6 +27,11 @@ func (s minissdp) advertise(location string) error {
 	}
 	client := minissdpc.Client{SocketPath: s.socket}
 
+	err := client.Connect()
+	if err != nil {
+		return fmt.Errorf("could not connect to minissdp: %v", err)
+	}
+
 	return client.RegisterService(minissdpc.Service{
 		Type:     "urn:Belkin:device:controllee:1",
 		USN:      fmt.Sprintf("uuid:Socket-1_0-%s::urn:Belkin:device:controllee:1", s.uuid),

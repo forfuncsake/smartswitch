@@ -25,7 +25,7 @@ func main() {
 	control := make(chan struct{})
 	s := &sw{}
 
-	c := smartswitch.NewController("tester", s, smartswitch.WithInterface("en1"))
+	c := smartswitch.NewController("tester", s)
 	loc, err := c.Start()
 	if err != nil {
 		panic(err)

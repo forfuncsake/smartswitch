@@ -17,6 +17,11 @@ import (
 )
 
 const (
+	serialChars  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	serialLength = 8
+)
+
+const (
 	setupURI     = "/setup.xml"
 	controlURI   = "/upnp/control/basicevent1"
 	subscribeURI = "/upnp/event/basicevent1"
@@ -152,18 +157,18 @@ func WithURIPrefix(s string) ControllerOption {
 
 // NewController creates a smart switch controller with the specified options
 func NewController(name string, s Switch, opts ...ControllerOption) *Controller {
-	serial := ""
-	for i := 0; i < 8; i++ {
-		serial += strconv.Itoa(rand.Int())
+	serial := make([]byte, serialLength)
+	for i := 0; i < serialLength; i++ {
+		serial[i] = serialChars[rand.Int()%len(serialChars)]
 	}
 
 	if name == "" {
-		name = "smartswitch-" + serial
+		name = "smartswitch-" + string(serial)
 	}
 
 	c := &Controller{
 		name:   name,
-		serial: serial,
+		serial: string(serial),
 		sw:     s,
 	}
 

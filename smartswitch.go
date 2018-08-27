@@ -328,7 +328,8 @@ func advertiseIPAddr(iface string) (net.IP, error) {
 	var err error
 
 	if iface != "" {
-		i, err := net.InterfaceByName(iface)
+		var i *net.Interface
+		i, err = net.InterfaceByName(iface)
 		if err != nil {
 			return nil, fmt.Errorf("could not get addresses for %s: %v", iface, err)
 		}
